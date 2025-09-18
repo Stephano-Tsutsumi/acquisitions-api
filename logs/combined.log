@@ -1,0 +1,28 @@
+{"level":"info","message":"Hello from Acquisitions!","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [17/Sep/2025:23:05:12 +0000] \"GET / HTTP/1.1\" 304 - \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:143.0) Gecko/20100101 Firefox/143.0\"","service":"acquisitions-api"}
+{"level":"info","message":"Hello from Acquisitions!","service":"acquisitions-api"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [18/Sep/2025:19:01:13 +0000] \"GET / HTTP/1.1\" 304 - \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:143.0) Gecko/20100101 Firefox/143.0\"","service":"acquisitions-api"}
+{"level":"info","message":"Hello from Acquisitions!","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [18/Sep/2025:19:06:22 +0000] \"GET / HTTP/1.1\" 200 24 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [18/Sep/2025:19:07:09 +0000] \"GET /api HTTP/1.1\" 404 142 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [18/Sep/2025:19:17:06 +0000] \"GET /api HTTP/1.1\" 200 43 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [18/Sep/2025:19:18:10 +0000] \"GET /health HTTP/1.1\" 200 76 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [18/Sep/2025:19:18:48 +0000] \"POST /api/auth/sign-in HTTP/1.1\" 200 31 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"body":{"email":"test@example.com","name":"Test User","password":"password123","role":"user"},"headers":{"accept":"*/*","content-length":"86","content-type":"application/json","host":"localhost:3000","user-agent":"curl/8.7.1"},"level":"info","message":"Signup request received:","service":"acquisitions-api"}
+{"level":"info","message":"User test@example.com created successfully","service":"acquisitions-api"}
+{"level":"info","message":"User registered successfully: test@example.com","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [18/Sep/2025:20:36:12 +0000] \"POST /api/auth/sign-up HTTP/1.1\" 201 105 \"-\" \"curl/8.7.1\"","service":"acquisitions-api"}
+{"level":"error","message":"JSON parsing error:","service":"acquisitions-api"}
+{"level":"error","message":"JSON parsing error:","service":"acquisitions-api"}
+{"body":{"email":"test@example.com","name":"Test User","password":"password123","role":"user"},"headers":{"connection":"close","content-length":"96","content-type":"application/json","host":"localhost:3000","user-agent":"HTTPie"},"level":"info","message":"Signup request received:","service":"acquisitions-api"}
+{"level":"error","message":"Error creating the user: Error: User with this email already exists","service":"acquisitions-api"}
+{"level":"error","message":"Signup error User with this email already exists","service":"acquisitions-api","stack":"Error: User with this email already exists\n    at createUser (file:///Users/stephanotsutsumi/Desktop/acquisition-production-api/acquisitions-api/src/services/auth.service.js:26:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async signup (file:///Users/stephanotsutsumi/Desktop/acquisition-production-api/acquisitions-api/src/controllers/auth.controller.js:25:18)"}
+{"level":"info","message":"::1 - - [18/Sep/2025:20:37:12 +0000] \"POST /api/auth/sign-up HTTP/1.1\" 409 31 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"error","message":"JSON parsing error:","service":"acquisitions-api"}
+{"level":"info","message":"User test@example.com authenticated successfully","service":"acquisitions-api"}
+{"level":"info","message":"User signed in successfully: test@example.com","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [18/Sep/2025:21:20:36 +0000] \"POST /api/auth/sign-in HTTP/1.1\" 200 117 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"error","message":"JSON parsing error:","service":"acquisitions-api"}
+{"level":"error","message":"JSON parsing error:","service":"acquisitions-api"}
+{"level":"info","message":"User signed out successfully","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [18/Sep/2025:21:21:58 +0000] \"POST /api/auth/sign-out HTTP/1.1\" 200 42 \"-\" \"HTTPie\"","service":"acquisitions-api"}

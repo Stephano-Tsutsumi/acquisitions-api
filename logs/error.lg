@@ -1,0 +1,7 @@
+{"level":"error","message":"JSON parsing error:","service":"acquisitions-api"}
+{"level":"error","message":"JSON parsing error:","service":"acquisitions-api"}
+{"level":"error","message":"Error creating the user: Error: User with this email already exists","service":"acquisitions-api"}
+{"level":"error","message":"Signup error User with this email already exists","service":"acquisitions-api","stack":"Error: User with this email already exists\n    at createUser (file:///Users/stephanotsutsumi/Desktop/acquisition-production-api/acquisitions-api/src/services/auth.service.js:26:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async signup (file:///Users/stephanotsutsumi/Desktop/acquisition-production-api/acquisitions-api/src/controllers/auth.controller.js:25:18)"}
+{"level":"error","message":"JSON parsing error:","service":"acquisitions-api"}
+{"level":"error","message":"JSON parsing error:","service":"acquisitions-api"}
+{"level":"error","message":"JSON parsing error:","service":"acquisitions-api"}
