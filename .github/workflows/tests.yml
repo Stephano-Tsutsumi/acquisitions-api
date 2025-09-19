@@ -1,0 +1,128 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main, staging]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: test
+      NODE_OPTIONS: --experimental-vm-modules
+      DATABASE_URL: postgresql://test:test@localhost:5432/acquisitions_test
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: acquisitions_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h localhost -p 5432 -U test; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+
+      - name: Run database migrations
+        run: npm run db:migrate
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/acquisitions_test
+
+      - name: Run tests
+        id: test
+        run: |
+          npm test -- --coverage --ci --verbose --passWithNoTests 2>&1 | tee test-output.txt
+        continue-on-error: true
+
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{ github.run_number }}
+          path: |
+            coverage/
+            test-output.txt
+          retention-days: 30
+
+      - name: Check test results and annotate failures
+        if: always()
+        run: |
+          if [ ${{ steps.test.outcome }} != "success" ]; then
+            echo "::error::Tests failed. Please check the test output for details."
+            
+            # Extract failed test information if available
+            if [ -f test-output.txt ]; then
+              grep -A 3 -B 1 "FAIL\|✕\|failing" test-output.txt | while read line; do
+                echo "::error::Test failure: $line"
+              done
+            fi
+            
+            exit 1
+          fi
+
+      - name: Generate test summary
+        if: always()
+        run: |
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ ${{ steps.test.outcome }} == "success" ]; then
+            echo "✅ **Tests**: All tests passed successfully" >> $GITHUB_STEP_SUMMARY
+            
+            # Extract test statistics if available
+            if [ -f test-output.txt ]; then
+              TEST_SUMMARY=$(grep -E "Test Suites:|Tests:" test-output.txt | tail -2)
+              if [ ! -z "$TEST_SUMMARY" ]; then
+                echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+                echo "$TEST_SUMMARY" >> $GITHUB_STEP_SUMMARY
+                echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+              fi
+            fi
+            
+            # Coverage information
+            if [ -d coverage ]; then
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "📊 **Coverage Report**: Available in artifacts" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "❌ **Tests**: Some tests failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Please check the test output and fix failing tests." >> $GITHUB_STEP_SUMMARY
+            
+            # Show failed test count if available
+            if [ -f test-output.txt ]; then
+              FAILED_COUNT=$(grep -c "FAIL\|✕" test-output.txt || echo "0")
+              if [ "$FAILED_COUNT" -gt "0" ]; then
+                echo "" >> $GITHUB_STEP_SUMMARY
+                echo "**Failed tests count**: $FAILED_COUNT" >> $GITHUB_STEP_SUMMARY
+              fi
+            fi
+          fi
