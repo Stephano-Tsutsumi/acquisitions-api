@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # Acquisitions API Application (Production)
+  acquisitions-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acquisitions-api-prod
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.production
+    environment:
+      # These should be injected from your deployment environment
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      NODE_ENV: production
+      LOG_LEVEL: info
+      # Optional Neon API configuration
+      NEON_API_KEY: ${NEON_API_KEY}
+      NEON_PROJECT_ID: ${NEON_PROJECT_ID}
+    networks:
+      - acquisitions-network
+    volumes:
+      # Persistent storage for logs in production
+      - logs-data:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(() => process.exit(0)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    # Production security and resource constraints
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    # Production logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  acquisitions-network:
+    driver: bridge
+
+volumes:
+  logs-data:
+    driver: local
