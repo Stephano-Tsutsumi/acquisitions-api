@@ -12,7 +12,7 @@ describe('API Endpoints', () => {
     });
   });
 
-describe('GET /api', () => {
+  describe('GET /api', () => {
     it('should return API message', async () => {
       const response = await request(app).get('/api').expect(200);
 
@@ -23,7 +23,7 @@ describe('GET /api', () => {
     });
   });
 
-describe('GET /nonexistent', () => {
+  describe('GET /nonexistent', () => {
     it('should return 404 for non-existent routes', async () => {
       const response = await request(app).get('/nonexsistent').expect(404);
 

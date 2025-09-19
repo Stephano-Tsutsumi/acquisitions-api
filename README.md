@@ -181,29 +181,31 @@ docker run -d \
 
 ### Development vs Production
 
-| Environment | Database | Connection | Branch Management |
-|-------------|----------|------------|-------------------|
-| **Development** | Neon Local (Docker) | `neon-local:5432` | Ephemeral branches (auto-created/deleted) |
-| **Production** | Neon Cloud | `ep-xxx.neon.tech` | Persistent production database |
+| Environment     | Database            | Connection         | Branch Management                         |
+| --------------- | ------------------- | ------------------ | ----------------------------------------- |
+| **Development** | Neon Local (Docker) | `neon-local:5432`  | Ephemeral branches (auto-created/deleted) |
+| **Production**  | Neon Cloud          | `ep-xxx.neon.tech` | Persistent production database            |
 
 ### Environment Variables
 
-| Variable | Development | Production | Description |
-|----------|-------------|------------|-------------|
-| `NODE_ENV` | `development` | `production` | Runtime environment |
-| `DATABASE_URL` | Neon Local URL | Neon Cloud URL | PostgreSQL connection string |
-| `JWT_SECRET` | Dev secret | Strong secret | JWT signing key |
-| `NEON_API_KEY` | Required for Local | Optional | Neon API access |
-| `NEON_PROJECT_ID` | Required for Local | Optional | Your Neon project |
-| `PARENT_BRANCH_ID` | Required for Local | N/A | Branch for ephemeral branches |
+| Variable           | Development        | Production     | Description                   |
+| ------------------ | ------------------ | -------------- | ----------------------------- |
+| `NODE_ENV`         | `development`      | `production`   | Runtime environment           |
+| `DATABASE_URL`     | Neon Local URL     | Neon Cloud URL | PostgreSQL connection string  |
+| `JWT_SECRET`       | Dev secret         | Strong secret  | JWT signing key               |
+| `NEON_API_KEY`     | Required for Local | Optional       | Neon API access               |
+| `NEON_PROJECT_ID`  | Required for Local | Optional       | Your Neon project             |
+| `PARENT_BRANCH_ID` | Required for Local | N/A            | Branch for ephemeral branches |
 
 ## API Endpoints
 
 ### Health & Status
+
 - `GET /health` - Health check with uptime
 - `GET /api` - API status
 
 ### Authentication
+
 - `POST /api/auth/sign-up` - User registration
 - `POST /api/auth/sign-in` - User login (placeholder)
 - `POST /api/auth/sign-out` - User logout (placeholder)
@@ -215,7 +217,7 @@ curl -X POST http://localhost:3000/api/auth/sign-up \
   -H "Content-Type: application/json" \
   -d '{
     "name": "John Doe",
-    "email": "john@example.com", 
+    "email": "john@example.com",
     "password": "securepassword123",
     "role": "user"
   }'
@@ -249,7 +251,7 @@ docker exec -it acquisitions-api-prod npm run db:studio
 ### Key Features
 
 - **Ephemeral Development Branches**: Each `docker-compose up` creates a fresh database branch
-- **Automatic Cleanup**: Development branches are deleted when containers stop  
+- **Automatic Cleanup**: Development branches are deleted when containers stop
 - **Type-Safe Operations**: Drizzle ORM provides full TypeScript support
 - **Migration Management**: Version-controlled database schema changes
 
@@ -335,6 +337,7 @@ docker system prune -a
 - **Input**: Zod validation on all inputs
 
 For production deployment, ensure:
+
 - Strong, unique JWT secrets
 - Secure DATABASE_URL with SSL
 - Regular security updates

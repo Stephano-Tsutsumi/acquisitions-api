@@ -47,13 +47,13 @@ jobs:
         run: |
           echo "## Lint and Format Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           if [ ${{ steps.eslint.outcome }} == "success" ]; then
             echo "✅ **ESLint**: All checks passed" >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ **ESLint**: Issues found - run \`npm run lint:fix\` to auto-fix" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           if [ ${{ steps.prettier.outcome }} == "success" ]; then
             echo "✅ **Prettier**: Code formatting is correct" >> $GITHUB_STEP_SUMMARY
           else

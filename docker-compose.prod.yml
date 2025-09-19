@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     container_name: acquisitions-api-prod
     ports:
-      - "3000:3000"
+      - '3000:3000'
     env_file:
       - .env.production
     environment:
@@ -27,7 +27,13 @@ services:
       - logs-data:/app/logs
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(() => process.exit(0)).catch(() => process.exit(1))"]
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://localhost:3000/health').then(() => process.exit(0)).catch(() => process.exit(1))",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -47,10 +53,10 @@ services:
         max_attempts: 3
     # Production logging configuration
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
 networks:
   acquisitions-network:

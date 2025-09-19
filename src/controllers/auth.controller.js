@@ -2,7 +2,7 @@
 // The goal of a controller is to export a single function that will do the job when a specific endpoint is called
 
 import logger from '../config/logger.js';
-import { signupSchema, signInSchema} from '../validations/auth.validations.js';
+import { signupSchema, signInSchema } from '../validations/auth.validations.js';
 import { formatValidationError } from '../utils/format.js';
 import { createUser, authenticateUser } from '../services/auth.service.js';
 import { jwttoken } from '../utils/jwt.js';
@@ -10,7 +10,10 @@ import { cookies } from '../utils/cookies.js';
 
 export const signup = async (req, res, next) => {
   try {
-    logger.info('Signup request received:', { body: req.body, headers: req.headers });
+    logger.info('Signup request received:', {
+      body: req.body,
+      headers: req.headers,
+    });
     const validationResult = signupSchema.safeParse(req.body);
 
     if (!validationResult.success) {
@@ -56,26 +59,26 @@ export const signup = async (req, res, next) => {
 export const signIn = async (req, res, next) => {
   try {
     const validationResult = signInSchema.safeParse(req.body);
-  
+
     if (!validationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
         details: formatValidationError(validationResult.error),
       });
     }
-  
+
     const { email, password } = validationResult.data;
-  
+
     const user = await authenticateUser({ email, password });
-  
+
     const token = jwttoken.sign({
       id: user.id,
       email: user.email,
       role: user.role,
     });
-  
+
     cookies.set(res, 'token', token);
-  
+
     logger.info(`User signed in successfully: ${email}`);
     res.status(200).json({
       message: 'User signed in successfully',
@@ -88,19 +91,19 @@ export const signIn = async (req, res, next) => {
     });
   } catch (e) {
     logger.error('Sign in error', e);
-  
+
     if (e.message === 'User not found' || e.message === 'Invalid password') {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-  
+
     next(e);
   }
 };
-  
+
 export const signOut = async (req, res, next) => {
   try {
     cookies.clear(res, 'token');
-  
+
     logger.info('User signed out successfully');
     res.status(200).json({
       message: 'User signed out successfully',
@@ -110,5 +113,3 @@ export const signOut = async (req, res, next) => {
     next(e);
   }
 };
-
-
