@@ -4,11 +4,11 @@ import {
   getUserById,
   updateUser,
   deleteUser,
-} from '#services/users.service.js';
+} from '../services/users.service.js';
 import {
   userIdSchema,
   updateUserSchema,
-} from '#validations/users.validation.js';
+} from '../validations/users.validations.js';
 import { formatValidationError } from '#utils/format.js';
 
 export const fetchAllUsers = async (req, res, next) => {
